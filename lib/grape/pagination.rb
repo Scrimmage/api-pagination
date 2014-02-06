@@ -24,10 +24,12 @@ module Grape
           block = Proc.new do |collection|
             links = (header['Link'] || "").split(',').map(&:strip)
             url = stripped_request_url
-            max_id = collection.last.id - 1
 
-            new_params = old_params.merge('max_id' => max_id)
-            links << %(<#{url}?#{new_params.to_param}>; rel="next")
+            if collection.last
+              max_id = collection.last.id - 1
+              new_params = old_params.merge('max_id' => max_id)
+              links << %(<#{url}?#{new_params.to_param}>; rel="next")
+            end
 
             header 'Link', links.join(', ') unless links.empty?
           end
@@ -62,10 +64,8 @@ module Grape
           params do
             optional :count, :type => Integer, :default => options[:count],
                                 :desc => 'Number of results to return per request.'
-            optional :max_id,     :type => Integer, :default => 1,
-                                :desc => 'Maximum id to fetch.'
-            optional :since_id,     :type => Integer, :default => 1,
-                                :desc => 'Minimum id to fetch.'
+            optional :max_id,     :type => Integer, :desc => 'Maximum id to fetch.'
+            optional :since_id,     :type => Integer, :desc => 'Minimum id to fetch.'
           end
         end
       end
