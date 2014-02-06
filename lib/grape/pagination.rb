@@ -49,7 +49,7 @@ module Grape
       end
 
       base.class_eval do
-        def self.paginate(options = {})
+        def self.paginate_params(options = {})
           options.reverse_merge!(:per_page => 10)
           params do
             optional :page,     :type => Integer, :default => 1,
@@ -59,7 +59,7 @@ module Grape
           end
         end
 
-        def self.paginate_timeline(options = {})
+        def self.paginate_timeline_params(options = {})
           options.reverse_merge!(:count => 10)
           params do
             optional :count, :type => Integer, :default => options[:count],

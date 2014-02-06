@@ -5,7 +5,7 @@ class NumbersAPI < Grape::API
   format :json
 
   desc 'Return some paginated set of numbers'
-  paginate :per_page => 25
+  paginate_params :per_page => 25
   params do
     requires :count, :type => Integer
     optional :with_headers, :default => false, :type => Boolean
@@ -22,7 +22,7 @@ class NumbersAPI < Grape::API
   end
 
   desc 'Return some number timeline'
-  paginate_timeline :count => 25
+  paginate_timeline_params :count => 25
   params do
     optional :with_headers, :default => false, :type => Boolean
   end
