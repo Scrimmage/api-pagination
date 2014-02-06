@@ -28,6 +28,30 @@ PaginatedSet = Struct.new(:current_page, :per_page, :total_count) do
   alias :total_entries :total_count
 end
 
+class NumberTimeline
+  @@id = rand(1000)
+
+  def id
+    @@id
+  end
+
+  def max_id(max_value)
+    self
+  end
+
+  def since_id(min_value)
+    self
+  end
+
+  def limit(limit)
+    self
+  end
+
+  def last
+    self
+  end
+end
+
 if ENV['PAGINATOR']
   ApiPagination.instance_variable_set(:@paginator, ENV['PAGINATOR'].to_sym)
 else

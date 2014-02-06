@@ -20,4 +20,20 @@ class NumbersAPI < Grape::API
 
     paginate PaginatedSet.new(params[:page], params[:per_page], params[:count])
   end
+
+  desc 'Return some number timeline'
+  paginate_timeline :count => 25
+  params do
+    optional :with_headers, :default => false, :type => Boolean
+  end
+  get :numbers_timeline do
+    if params[:with_headers]
+      url   = request.url.sub(/\?.*/, '')
+      query = Rack::Utils.parse_query(request.query_string)
+      query.delete('with_headers')
+      header 'Link', %(<#{url}?#{query.to_query}>; rel="without")
+    end
+
+    paginate_timeline NumberTimeline.new
+  end
 end

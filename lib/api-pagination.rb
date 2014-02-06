@@ -17,6 +17,14 @@ module ApiPagination
       end
     end
 
+    def paginate_timeline(collection, options = {}, &block)
+      options[:count] ||= 10
+
+      collection = options[:max_id] ? collection.max_id(options[:max_id]) : collection
+      collection = options[:since_id] ? collection.since_id(options[:since_id]) : collection
+      collection.limit(options[:count]).tap(&block)
+    end
+
     def pages_from(collection)
       {}.tap do |pages|
         unless collection.first_page?

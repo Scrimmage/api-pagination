@@ -5,8 +5,10 @@ require 'support/shared_examples/middle_page'
 require 'support/shared_examples/last_page'
 
 describe NumbersAPI do
-  describe 'GET #index' do
-    let(:links) { last_response.headers['Link'].split(', ') }
+  let(:links) { last_response.headers['Link'].split(', ') }
+    let(:total) { last_response.headers['Total'].to_i }
+
+  describe 'GET /numbers' do
     let(:total) { last_response.headers['Total'].to_i }
 
     context 'without enough items to give more than one page' do
@@ -47,4 +49,19 @@ describe NumbersAPI do
       end
     end
   end
-end
+
+  describe 'GET /numbers_timeline' do
+    let(:max_id) { NumberTimeline.new.id - 1 }
+    context 'with existing Link headers' do
+      before { get :numbers_timeline, :count => 30, :with_headers => true }
+
+      it 'should keep existing Links' do
+        expect(links).to include('<http://example.org/numbers_timeline?count=30>; rel="without"')
+      end
+
+      it 'should contain Links header to next page' do
+        expect(links).to include(%Q(<http://example.org/numbers_timeline?count=30&max_id=#{max_id}&with_headers=true>; rel="next"))
+      end
+    end
+    end
+  end
