@@ -6,10 +6,10 @@ require 'support/shared_examples/last_page'
 
 describe NumbersAPI do
   let(:links) { last_response.headers['Link'].split(', ') }
-    let(:total) { last_response.headers['Total'].to_i }
+    let(:total) { last_response.headers['Total'] }
 
   describe 'GET /numbers' do
-    let(:total) { last_response.headers['Total'].to_i }
+    let(:total) { last_response.headers['Total'] }
 
     context 'without enough items to give more than one page' do
       before { get :numbers, :count => 20 }
@@ -19,7 +19,7 @@ describe NumbersAPI do
       end
 
       it 'should give a Total header' do
-        expect(total).to eq(20)
+        expect(total).to eq('20')
       end
     end
 

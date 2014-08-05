@@ -9,6 +9,6 @@ shared_examples 'an endpoint with existing Link headers' do
   end
 
   it 'should give a Total header' do
-    expect(total).to eq(30)
+    expect(total).to eq('30')
   end
 end

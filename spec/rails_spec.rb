@@ -9,7 +9,7 @@ describe NumbersController, :type => :controller do
 
   describe 'GET #index' do
     let(:links) { response.headers['Link'].split(', ') }
-    let(:total) { response.headers['Total'].to_i }
+    let(:total) { response.headers['Total'] }
 
     context 'without enough items to give more than one page' do
       before { get :index, :count => 20 }
@@ -18,7 +18,7 @@ describe NumbersController, :type => :controller do
       end
 
       it 'should give a Total header' do
-        expect(total).to eq(20)
+        expect(total).to eq('20')
       end
     end
 

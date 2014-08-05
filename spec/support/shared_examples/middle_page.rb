@@ -7,6 +7,6 @@ shared_examples 'an endpoint with a middle page' do
   end
 
   it 'should give a Total header' do
-    expect(total).to eq(100)
+    expect(total).to eq('100')
   end
 end
